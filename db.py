@@ -1,32 +1,25 @@
 import sqlite3
+import os
+
+DB_PATH = os.path.join("data", "golf.db")
 
 def get_connection():
-    conn = sqlite3.connect('data/golf.db')
-    return conn
+    return sqlite3.connect(DB_PATH)
 
-def init_db():
+def insert_round(course_id, date, score):
     conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS courses (
-            id INTEGER PRIMARY KEY,
-            name TEXT,
-            rating REAL,
-            slope INTEGER,
-            par INTEGER
-        )
-    ''')
-
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS rounds (
-            id INTEGER PRIMARY KEY,
-            course_id INTEGER,
-            date TEXT,
-            score INTEGER,
-            FOREIGN KEY(course_id) REFERENCES courses(id)
-        )
-    ''')
-
+    cur = conn.cursor()
+    cur.execute(
+        "INSERT INTO rounds (course_id, date, score) VALUES (?, ?, ?)",
+        (course_id, date, score)
+    )
     conn.commit()
     conn.close()
+
+def get_rounds():
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM rounds ORDER BY date DESC")
+    rows = cur.fetchall()
+    conn.close()
+    return rows
