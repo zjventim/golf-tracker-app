@@ -11,7 +11,7 @@ A Python web app to track golf scores and calculate handicap using course rating
 ## To Run Locally
 
 ```bash
-git clone https://github.com/yourusername/golf-tracker-flask.git
-cd golf-tracker-flask
+git clone https://github.com/yourusername/golf-tracker-app.git
+cd golf-tracker-app
 pip install -r requirements.txt
 python app.py
